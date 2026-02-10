@@ -57,7 +57,7 @@ document.querySelectorAll('.btn-primary').forEach(btn => {
 });
 
 function showDonateModal() {
-    alert('Thank you for your interest in supporting Dakshata Society!\n\nPlease visit our donation page or contact us at:\ninfo@dakshatasociety.org');
+    alert('Thank you for your interest in supporting Dakshata Society!\\n\\nPlease visit our donation page or contact us at:\\ninfo@dakshatasociety.org');
 }
 
 // ============================================

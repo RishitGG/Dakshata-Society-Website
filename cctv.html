@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch CCTV (Live) — Dakshata Society</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #1e40af 0%, #6d28d9 100%);
+            color: var(--white);
+            padding: 100px 24px;
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .page-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -30%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+        
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+            line-height: 1.6;
+        }
+        
+        .cctv-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px 4rem;
+        }
+        
+        .stream-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 3rem;
+            transition: var(--transition);
+        }
+
+        .stream-card:hover {
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .stream-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 0;
+        }
+        
+        .stream-viewer {
+            background: #000;
+            aspect-ratio: 16 / 9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stream-viewer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.05), rgba(109, 40, 217, 0.05));
+            pointer-events: none;
+        }
+        
+        .stream-placeholder-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .stream-status {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: var(--white);
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            z-index: 10;
+            letter-spacing: 0.3px;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .stream-info {
+            padding: 2.5rem;
+            background: var(--white);
+        }
+        
+        .stream-info h2 {
+            color: var(--dark-text);
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+        
+        .stream-info p {
+            color: var(--light-text);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .security-note {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(251, 191, 36, 0.1));
+            border: 2px solid rgba(245, 158, 11, 0.2);
+            border-left: 4px solid var(--accent-color);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+        
+        .security-note h3 {
+            color: var(--dark-text);
+            margin-bottom: 0.75rem;
+            font-size: 1.05rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .security-note i {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+        
+        .security-note p {
+            color: var(--light-text);
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .info-boxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        
+        .info-box {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .info-box:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .info-box i {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .info-box h3 {
+            color: var(--dark-text);
+            margin-bottom: 0.75rem;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+        
+        .info-box p {
+            color: var(--light-text);
+            font-size: 0.95rem;
+            margin: 0;
+            line-height: 1.7;
+        }
+        
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 80px 24px;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .page-header p {
+                font-size: 1rem;
+            }
+
+            .stream-content {
+                grid-template-columns: 1fr;
+            }
+
+            .cctv-container {
+                padding: 0 24px 3rem;
+            }
+
+            .stream-info {
+                padding: 2rem;
+            }
+
+            .info-boxes {
+                gap: 1.5rem;
+                margin-top: 3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cctv-container {
+                padding: 0 16px 2rem;
+            }
+
+            .stream-info {
+                padding: 1.5rem;
+            }
+
+            .stream-info h2 {
+                font-size: 1.2rem;
+            }
+
+            .info-box {
+                padding: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <i class="fas fa-handshake"></i>
+                    <span>Dakshata Society</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#visitors">Visitors & Media</a></li>
+                    <li><a href="success-stories.html">Success Stories</a></li>
+                    <li><a href="cctv.html">Watch CCTV</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-header">
+        <h1><i class="fas fa-video"></i> Live CCTV Feed</h1>
+        <p>Real-time monitoring and facility visibility</p>
+    </div>
+
+    <main class="container cctv-container">
+        <div class="stream-card">
+            <div class="stream-content">
+                <div class="stream-viewer">
+                    <img src="ddac2.jpeg" alt="DDAC Live Feed" class="stream-placeholder-image">
+                    <div class="stream-status">
+                        <i class="fas fa-circle"></i> Offline
+                    </div>
+                </div>
+                <div class="stream-info">
+                    <h2>DDAC Main Facility</h2>
+                    <p>Live feed from the main entrance and common areas of Dakshata Society's District De-Addiction Centre.</p>
+                    
+                    <div class="security-note">
+                        <h3><i class="fas fa-lock"></i> Access Control</h3>
+                        <p>This live feed is restricted to authorized personnel only. Contact the DDAC administrator for access credentials.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-boxes">
+            <div class="info-box">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Privacy & Security</h3>
+                <p>All monitoring complies with privacy regulations. Client areas are not monitored.</p>
+            </div>
+            <div class="info-box">
+                <i class="fas fa-clock"></i>
+                <h3>24/7 Monitoring</h3>
+                <p>Continuous facility surveillance for security and safety purposes.</p>
+            </div>
+            <div class="info-box">
+                <i class="fas fa-key"></i>
+                <h3>Authorized Access</h3>
+                <p>Contact the DDAC administrator to request access or technical support.</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 3rem; background: var(--light-bg); padding: 2rem; border-radius: var(--border-radius); text-align: center;">
+            <h3 style="color: var(--dark-text); margin-bottom: 0.5rem;">Need CCTV Access?</h3>
+            <p style="color: var(--light-text); margin-bottom: 1rem;">To request access to the live CCTV feed, contact our administration team.</p>
+            <a href="contact.html" style="display: inline-block; background: var(--primary-color); color: var(--white); padding: 12px 30px; border-radius: var(--border-radius); text-decoration: none; font-weight: 600; transition: var(--transition);" onmouseover="this.style.background='#1d4ed8'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='var(--primary-color)'; this.style.transform='translateY(0)'">Contact Us</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Dakshata Society</h4>
+                    <p>District De-Addiction Centre (DDAC) — Supporting recovery and community reintegration.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#visitors">Visitors & Media</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="index.html#about">Medical Support</a></li>
+                        <li><a href="index.html#about">Counselling</a></li>
+                        <li><a href="index.html#about">Family Support</a></li>
+                        <li><a href="index.html#about">Aftercare</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: info@dakshatasociety.org</p>
+                    <p>Phone: +91 (555) 123-4567</p>
+                    <p>Address: DDAC, Bhadradri Kothagudem District, Telangana, India</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Dakshata Society. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

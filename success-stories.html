@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success Stories — Dakshata Society</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #1e40af 0%, #6d28d9 100%);
+            color: var(--white);
+            padding: 100px 24px;
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .page-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -30%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+        
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+            line-height: 1.6;
+        }
+        
+        .stories-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        .story-entry {
+            background: var(--white);
+            border: 2px solid transparent;
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .story-entry::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .story-entry:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-8px);
+            border-color: var(--primary-color);
+        }
+        
+        .story-entry h3 {
+            color: var(--dark-text);
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+        
+        .story-entry .author {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .story-entry p {
+            color: var(--light-text);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .story-entry .quote {
+            font-style: italic;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            color: var(--dark-text);
+            background: rgba(245, 158, 11, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2.5rem;
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.05), rgba(109, 40, 217, 0.05));
+            border-radius: var(--border-radius);
+            border: 2px solid rgba(30, 64, 175, 0.1);
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+        
+        .empty-state h2 {
+            color: var(--dark-text);
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            font-weight: 900;
+        }
+        
+        .empty-state p {
+            color: var(--light-text);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-color), #1e3a8a);
+            color: var(--white);
+            padding: 12px 32px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 700;
+            transition: var(--transition);
+            letter-spacing: 0.5px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 80px 24px;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .page-header p {
+                font-size: 1rem;
+            }
+
+            .stories-container {
+                padding: 0 16px;
+            }
+
+            .story-entry {
+                padding: 1.5rem;
+            }
+
+            .empty-state {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .empty-state i {
+                font-size: 3rem;
+            }
+
+            .empty-state h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <i class="fas fa-handshake"></i>
+                    <span>Dakshata Society</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#visitors">Visitors & Media</a></li>
+                    <li><a href="success-stories.html">Success Stories</a></li>
+                    <li><a href="cctv.html">Watch CCTV</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-header">
+        <h1><i class="fas fa-star"></i> Success Stories</h1>
+        <p>Real-life stories of recovery and hope from Dakshata Society</p>
+    </div>
+
+    <main class="container stories-container">
+        <div class="empty-state">
+            <i class="fas fa-lightbulb"></i>
+            <h2>Stories Coming Soon</h2>
+            <p>We're collecting and documenting inspiring stories of recovery and reintegration from our clients and their families. These stories showcase the transformative power of compassionate care and community support.</p>
+            <p>Each story is shared with full consent and anonymization where needed to protect privacy and dignity.</p>
+            <a href="contact.html" class="cta-button">Get in Touch</a>
+        </div>
+
+        <div style="margin-top: 3rem; padding: 2rem; background: var(--light-bg); border-radius: var(--border-radius); text-align: center;">
+            <p style="color: var(--light-text); margin: 0;">Have a story to share? <strong>Contact us</strong> to contribute your experience and inspire others on their recovery journey.</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Dakshata Society</h4>
+                    <p>District De-Addiction Centre (DDAC) — Supporting recovery and community reintegration.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#visitors">Visitors & Media</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="index.html#about">Medical Support</a></li>
+                        <li><a href="index.html#about">Counselling</a></li>
+                        <li><a href="index.html#about">Family Support</a></li>
+                        <li><a href="index.html#about">Aftercare</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: info@dakshatasociety.org</p>
+                    <p>Phone: +91 (555) 123-4567</p>
+                    <p>Address: DDAC, Bhadradri Kothagudem District, Telangana, India</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Dakshata Society. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
