@@ -3,7 +3,7 @@
 // ============================================
 const heroImages = [
     'rohit_raju.jpeg',
-    'DDAC1.jpeg',
+    'ddac1.jpeg',
     'jitesh_v_patil.jpeg',
     'vikrant_kumar.jpeg',
     'bhaskar_naik.jpeg'
