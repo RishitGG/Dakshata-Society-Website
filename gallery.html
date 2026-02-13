@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery — Dakshata Society</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #1e40af 0%, #6d28d9 100%);
+            color: var(--white);
+            padding: 100px 24px;
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .page-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -30%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+        
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+            line-height: 1.6;
+        }
+
+        .gallery-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 4rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .gallery-item {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-12px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .gallery-item-image {
+            width: 100%;
+            height: 340px;
+            object-fit: cover;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover .gallery-item-image {
+            transform: scale(1.05);
+        }
+
+        .gallery-item-content {
+            padding: 2.5rem;
+        }
+
+        .gallery-item-category {
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .gallery-item h3 {
+            color: var(--dark-text);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+
+        .gallery-item p {
+            color: var(--light-text);
+            line-height: 1.8;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .gallery-item-meta {
+            display: flex;
+            gap: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .gallery-item-meta-item {
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+
+        .gallery-item-meta-item i {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+
+        .gallery-filters {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 24px;
+            border: 2px solid #e2e8f0;
+            background: var(--white);
+            color: var(--medium-text);
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            border-color: transparent;
+        }
+
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .video-overlay {
+            opacity: 1;
+        }
+
+        .video-overlay i {
+            font-size: 3rem;
+            color: var(--white);
+        }
+
+        .video-container {
+            position: relative;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 340px;
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 80px 24px;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .gallery-container {
+                padding: 0 24px 3rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .gallery-filters {
+                margin-bottom: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header {
+                padding: 60px 16px;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .gallery-container {
+                padding: 0 16px 2rem;
+            }
+
+            .gallery-item-content {
+                padding: 1.5rem;
+            }
+
+            .gallery-item h3 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <img src="logo.jpeg" alt="Dakshata Society Logo" class="logo-img">
+                    <span>Dakshata Society</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="success-stories.html">Success Stories</a></li>
+                    <li><a href="cctv.html">Watch CCTV</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-header">
+        <h1><i class="fas fa-images"></i> Gallery</h1>
+        <p>Explore our facility, events, and the people behind Dakshata Society's mission</p>
+    </div>
+
+    <main class="gallery-container">
+        <div class="gallery-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="officials">Government Officials</button>
+            <button class="filter-btn" data-filter="facility">Facility</button>
+            <button class="filter-btn" data-filter="media">Media</button>
+        </div>
+
+        <div class="gallery-grid">
+            <!-- Rohit Raju -->
+            <div class="gallery-item" data-category="officials">
+                <img src="rohit_raju.jpeg" alt="Mr. Rohit Raju, IPS" class="gallery-item-image">
+                <div class="gallery-item-content">
+                    <p class="gallery-item-category"><i class="fas fa-shield-alt"></i> Law Enforcement</p>
+                    <h3>Mr. Rohit Raju, IPS</h3>
+                    <p>Superintendent of Police, Bhadradri Kothagudem District. Mr. Raju has been instrumental in fostering law enforcement collaboration with DDAC, recognizing substance use as both a public health and safety concern. His support strengthens our community policing initiatives and de-addiction programs.</p>
+                    <div class="gallery-item-meta">
+                        <span class="gallery-item-meta-item"><i class="fas fa-briefcase"></i> Superintendent of Police</span>
+                        <span class="gallery-item-meta-item"><i class="fas fa-map-marker-alt"></i> Bhadradri Kothagudem</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DDAC1 Building -->
+            <div class="gallery-item" data-category="facility">
+                <img src="ddac1.jpeg" alt="Dakshata Society DDAC Main Building" class="gallery-item-image">
+                <div class="gallery-item-content">
+                    <p class="gallery-item-category"><i class="fas fa-building"></i> Facility</p>
+                    <h3>DDAC Main Building</h3>
+                    <p>The main facility of Dakshata Society's District De-Addiction Centre, designed to provide a welcoming and therapeutic environment for individuals seeking recovery support. Our modern infrastructure ensures comprehensive care, medical facilities, counselling spaces, and comfortable accommodations for inpatient programs.</p>
+                    <div class="gallery-item-meta">
+                        <span class="gallery-item-meta-item"><i class="fas fa-cube"></i> Modern Facility</span>
+                        <span class="gallery-item-meta-item"><i class="fas fa-hospital"></i> Healthcare</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jitesh V Patil -->
+            <div class="gallery-item" data-category="officials">
+                <img src="jitesh_v_patil.jpeg" alt="Jitesh V Patil, I.A.S., Collector" class="gallery-item-image">
+                <div class="gallery-item-content">
+                    <p class="gallery-item-category"><i class="fas fa-users-cog"></i> District Administration</p>
+                    <h3>Jitesh V Patil, I.A.S.</h3>
+                    <p>Collector of Bhadradri Kothagudem District, providing essential administrative oversight and support for DDAC's community health objectives. His leadership ensures alignment with district governance priorities and strengthens our integration within the broader health and social welfare systems.</p>
+                    <div class="gallery-item-meta">
+                        <span class="gallery-item-meta-item"><i class="fas fa-gavel"></i> Collector</span>
+                        <span class="gallery-item-meta-item"><i class="fas fa-map-marker-alt"></i> District Administration</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vikrant Kumar Singh -->
+            <div class="gallery-item" data-category="officials">
+                <img src="vikrant_kumar.jpeg" alt="Shri. Vikrant Kumar Singh, IPS" class="gallery-item-image">
+                <div class="gallery-item-content">
+                    <p class="gallery-item-category"><i class="fas fa-shield-alt"></i> Police Leadership</p>
+                    <h3>Shri. Vikrant Kumar Singh, IPS</h3>
+                    <p>Senior Superintendent of Police, Bhadrachalam. His senior police leadership has been crucial in supporting DDAC's community policing and de-addiction initiatives. Visited our facility on January 5, 2026, reaffirming law enforcement's commitment to substance use prevention and recovery support.</p>
+                    <div class="gallery-item-meta">
+                        <span class="gallery-item-meta-item"><i class="fas fa-star"></i> SSP Bhadrachalam</span>
+                        <span class="gallery-item-meta-item"><i class="fas fa-calendar"></i> Visited Jan 5, 2026</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bhaskar Naik -->
+            <div class="gallery-item" data-category="officials">
+                <img src="bhaskar_naik.jpeg" alt="L. Bhaskar Naik, DMHO" class="gallery-item-image">
+                <div class="gallery-item-content">
+                    <p class="gallery-item-category"><i class="fas fa-heartbeat"></i> Health Department</p>
+                    <h3>L. Bhaskar Naik, DMHO</h3>
+                    <p>District Medical & Health Officer, Bhadradri Kothagudem. Dr. Naik provides essential clinical oversight and coordination, integrating DDAC services within the district's broader health system. His expertise ensures evidence-based practices and quality healthcare delivery across all our programs.</p>
+                    <div class="gallery-item-meta">
+                        <span class="gallery-item-meta-item"><i class="fas fa-user-md"></i> District Medical Officer</span>
+                        <span class="gallery-item-meta-item"><i class="fas fa-hospital"></i> Health Services</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DDAC2 Reception -->
+            <div class="gallery-item" data-category="facility">
+                <img src="ddac2.jpeg" alt="DDAC Reception Area" class="gallery-item-image">
+                <div class="gallery-item-content">
+                    <p class="gallery-item-category"><i class="fas fa-door-open"></i> Facility</p>
+                    <h3>DDAC Reception Area</h3>
+                    <p>Our modern and welcoming reception area is designed with client comfort and accessibility in mind. This thoughtfully designed space creates a safe, non-judgmental environment where individuals and families can seek help and support. Professional staff provide compassionate intake and orientation services.</p>
+                    <div class="gallery-item-meta">
+                        <span class="gallery-item-meta-item"><i class="fas fa-handshake"></i> Client Services</span>
+                        <span class="gallery-item-meta-item"><i class="fas fa-smile"></i> Welcoming Space</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Siva Naik Video -->
+            <div class="gallery-item" data-category="officials">
+                <div class="video-container">
+                    <video src="siva_naik.mp4" poster="ddac1.jpeg" class="gallery-item-image"></video>
+                    <div class="video-overlay">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                </div>
+                <div class="gallery-item-content">
+                    <p class="gallery-item-category"><i class="fas fa-video"></i> Video Testimony</p>
+                    <h3>Sri. Siva Naik</h3>
+                    <p>District Judge, Bhadrachalam. In this video, Sri. Siva Naik discusses the judicial perspective on DDAC's rehabilitation and de-addiction programs as vital community initiatives. His recognition underscores the legal system's appreciation for our holistic approach to substance use disorders.</p>
+                    <div class="gallery-item-meta">
+                        <span class="gallery-item-meta-item"><i class="fas fa-gavel"></i> District Judge</span>
+                        <span class="gallery-item-meta-item"><i class="fas fa-play"></i> Video</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Eata Uday Video -->
+            <div class="gallery-item" data-category="media">
+                <div class="video-container">
+                    <video src="eata_uday.mp4" poster="ddac2.jpeg" class="gallery-item-image"></video>
+                    <div class="video-overlay">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                </div>
+                <div class="gallery-item-content">
+                    <p class="gallery-item-category"><i class="fas fa-video"></i> Inauguration Event</p>
+                    <h3>Dr. Eata Uday</h3>
+                    <p>Healthcare Administrator. This video documents the formal inauguration of our renovated and modernized DDAC facility, featuring improved infrastructure and expanded capacity. Dr. Eata Uday's remarks highlight the significance of these upgrades in enhancing our service delivery capacity.</p>
+                    <div class="gallery-item-meta">
+                        <span class="gallery-item-meta-item"><i class="fas fa-ribbon"></i> Inauguration</span>
+                        <span class="gallery-item-meta-item"><i class="fas fa-play"></i> Video</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Newspaper -->
+            <div class="gallery-item" data-category="media">
+                <img src="eenadu_newspaper.jpeg" alt="Eenadu Newspaper Coverage" class="gallery-item-image">
+                <div class="gallery-item-content">
+                    <p class="gallery-item-category"><i class="fas fa-newspaper"></i> Press Coverage</p>
+                    <h3>Eenadu Newspaper</h3>
+                    <p>Regional media coverage in Eenadu newspaper bringing public awareness to DDAC's initiatives and community impact. This publication helped disseminate information about our programs and brought recognition to the vital work being done at Dakshata Society in supporting substance use recovery and community reintegration.</p>
+                    <div class="gallery-item-meta">
+                        <span class="gallery-item-meta-item"><i class="fas fa-globe"></i> Regional Media</span>
+                        <span class="gallery-item-meta-item"><i class="fas fa-newspaper"></i> Print</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, rgba(30, 64, 175, 0.05), rgba(109, 40, 217, 0.05)); border: 2px solid rgba(30, 64, 175, 0.1); border-radius: var(--border-radius); padding: 3rem; text-align: center;">
+            <h3 style="color: var(--dark-text); font-size: 1.3rem; margin-bottom: 1rem; font-weight: 800;">Media Usage & Consent</h3>
+            <p style="color: var(--light-text); max-width: 700px; margin: 0 auto; line-height: 1.8;">
+                All individuals pictured in our gallery have authorized their images and videos for publication. We respect the privacy and dignity of everyone associated with Dakshata Society. Media shown represents the collaborative efforts and recognition from government officials, healthcare professionals, law enforcement, and media organizations in supporting our mission.
+            </p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Dakshata Society</h4>
+                    <p>District De-Addiction Centre (DDAC) — Supporting recovery and community reintegration.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="success-stories.html">Success Stories</a></li>
+                        <li><a href="cctv.html">Watch CCTV</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Our Services</h4>
+                    <ul>
+                        <li><a href="index.html#about">Medical Support</a></li>
+                        <li><a href="index.html#about">Counselling & Therapy</a></li>
+                        <li><a href="index.html#about">Family Engagement</a></li>
+                        <li><a href="index.html#about">Aftercare & Reintegration</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:dakshataa1@gmail.com">dakshataa1@gmail.com</a></p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:+919313367446">9313367446</a></p>
+                    <p><i class="fas fa-map-marker-alt"></i> H.No. 9-1-67, Shanthi Nagar Colony, Behind CRPF-Camp, Bhadrachalam, Bhadradri Kothagudem Dist, Telangana-507111</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Dakshata Society. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Gallery Filter Functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.dataset.filter;
+                
+                // Update active button
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Filter items
+                document.querySelectorAll('.gallery-item').forEach(item => {
+                    if (filter === 'all' || item.dataset.category === filter) {
+                        item.style.display = 'block';
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+                        }, 10);
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Video controls
+        document.querySelectorAll('.video-container').forEach(container => {
+            container.addEventListener('click', () => {
+                const video = container.querySelector('video');
+                if (video.paused) {
+                    video.play();
+                } else {
+                    video.pause();
+                }
+            });
+        });
+
+        // Initialize gallery items with transition styles
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.style.transition = 'all 0.3s ease';
+            item.style.opacity = '1';
+        });
+    </script>
+</body>
+</html>

@@ -142,6 +142,13 @@ body {
     letter-spacing: -0.5px;
 }
 
+.logo-img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+}
+
 .logo i {
     font-size: 2rem;
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
@@ -205,14 +212,58 @@ body {
    HERO SECTION
    ============================================ */
 .hero {
-    background: linear-gradient(135deg, #1e40af 0%, #6d28d9 50%, #1e40af 100%);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.6) 100%);
     background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
     color: var(--white);
     padding: 120px 24px;
     text-align: center;
     position: relative;
     overflow: hidden;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-carousel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.hero-bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.8;
+    animation: zoomIn 0.8s ease;
+    transition: opacity 1.5s ease-in-out;
+    filter: brightness(0.9);
+}
+
+.hero-bg-image[src*="jitesh_v_patil"] {
+    object-position: center 30%;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(1.1);
+        opacity: 0.2;
+    }
+    to {
+        transform: scale(1);
+        opacity: 0.3;
+    }
 }
 
 @keyframes gradientShift {
@@ -245,27 +296,29 @@ body {
     font-weight: 900;
     animation: slideDown 0.8s ease;
     letter-spacing: -1px;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .hero-subtitle {
     font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.95);
     margin-bottom: 1.5rem;
     animation: slideUp 0.8s ease 0.15s both;
     font-weight: 500;
     letter-spacing: 0.5px;
+    text-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
 }
 
 .hero p {
     font-size: 1.35rem;
     margin-bottom: 2.5rem;
-    opacity: 0.9;
+    opacity: 1;
     animation: slideUp 0.8s ease 0.2s both;
     line-height: 1.6;
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
+    text-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
 }
 
 .hero-buttons {
@@ -822,6 +875,7 @@ body {
 .visitors-media {
     background: linear-gradient(180deg, var(--white), var(--lighter-bg));
     padding: 100px 24px;
+    display: none;
 }
 
 .visitors-media .section-header {

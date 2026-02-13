@@ -1,5 +1,43 @@
 // ============================================
-// SMOOTH SCROLL AND ACTIVE LINK HIGHLIGHTING
+// HERO SECTION IMAGE CAROUSEL
+// ============================================
+const heroImages = [
+    'rohit_raju.jpeg',
+    'ddac1.jpeg',
+    'jitesh_v_patil.jpeg',
+    'vikrant_kumar.jpeg',
+    'bhaskar_naik.jpeg'
+];
+
+let currentHeroImageIndex = 0;
+
+function rotateHeroBackground() {
+    const heroCarousel = document.querySelector('.hero-carousel');
+    if (!heroCarousel) return;
+    
+    currentHeroImageIndex = (currentHeroImageIndex + 1) % heroImages.length;
+    const nextImage = heroImages[currentHeroImageIndex];
+    
+    // Create new image element
+    const img = document.createElement('img');
+    img.src = nextImage;
+    img.alt = `Hero Background ${currentHeroImageIndex + 1}`;
+    img.className = 'hero-bg-image';
+    
+    // Fade out old image
+    const oldImage = heroCarousel.querySelector('.hero-bg-image');
+    if (oldImage) {
+        oldImage.style.opacity = '0';
+        setTimeout(() => oldImage.remove(), 1500);
+    }
+    
+    // Add new image
+    heroCarousel.appendChild(img);
+}
+
+// Rotate hero images every 4 seconds
+setInterval(rotateHeroBackground, 4000);
+
 // ============================================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
